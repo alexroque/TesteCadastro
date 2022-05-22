@@ -3,7 +3,7 @@ from pyexpat import model
 from django.db import models
 
 class Categoria(models.Model):
-    nome = models.CharField(max_length=200)
+    nome = models.CharField(max_length=200, unique=True)
     data_cadastro = models.DateField()
     data_atualizacao = models.DateField()
     
@@ -21,7 +21,7 @@ class Fornecedor(models.Model):
         return self.nome_fantasia
     
 class Produto(models.Model):
-    nome = models.CharField(max_length=200)
+    nome = models.CharField(max_length=200, unique=True)
     data_cadastro = models.DateField
     data_atualizacao = models.DateField
     descricao = models.CharField(max_length=400)
