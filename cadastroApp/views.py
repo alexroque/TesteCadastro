@@ -160,7 +160,6 @@ class FornecedorView(APIView):
         resp = consulta_cnpj(request.data['cnpj'])
         if serializer.is_valid():
             if resp:
-                print(resp)
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
