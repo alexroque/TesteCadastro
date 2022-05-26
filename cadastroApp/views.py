@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
 from rest_framework import status
+from cadastroApp.functions.validaCNPJ import consulta_cnpj
 
     
 class CategoriaSerializer(ModelSerializer):
@@ -151,17 +152,20 @@ class FornecedorView(APIView):
 
     def get(self, request):
         fornecedores = Fornecedor.objects.all()
-        serializer = FornecedorSerializer(fornecedores, many = True)
+        serializer = FornecedorSerializer(fornecedores, many = True, )
         return Response(serializer.data)
     
     def post(self, request):
         serializer = FornecedorSerializer(data=request.data)
+        resp = consulta_cnpj(request.data['cnpj'])
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            if resp:
+                print(resp)
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        
 class FornecedorDetail(APIView):
 
     def get(self, request, id):
